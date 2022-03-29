@@ -1,42 +1,61 @@
-Webcam.set({
-    width : 350,
-    height : 300,
-    image_format : 'png',
-    png_quality : 90
-});
-
-var camera = document.getElementById('camera');
-Webcam.attach('#camera');
-
-function take_snapshot() {
-    Webcam.snap(function(data_uri) {
-        document.getElementById('result').innerHTML = '<img id = "captured_image" src = "' + data_uri + '">';
-    });
+function Start() {
+    navigator.mediaDevices.getUserMedia({audio : true});
+    classifier = ml5.soundClassifier('teachablemachine.withgoogle.com/models/Sm0xU0akc/model.json', ModelReady);
 }
 
-console.log('ml5 version :', ml5.version);
-
-var classifier = ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/JhOL_bZh9/model.json', modelLoaded);
-
-function modelLoaded() {
-    console.log('Model Loaded!')
+function ModelReady() {
+    classifier.classify(gotResults);
+    console.log('Model Ready');
 }
 
-function check() {
-    var img = document.getElementById('captured_image');
-    classifier.classify(img, gotResult);
-}
-
-function gotResult(error, results) {
-    if (error) {
-       console.error(error);
-    }
-
+function gotResults(error, results) {  
+    if( error )
+    console.error(error);
+    
     else {
         console.log(results);
-        document.getElementById('result_object').innerHTML = results[0].label;
-        document.getElementById('result_accuracy').innerHTML = results[0].confidence.toFixed(3);
-    }
+        var random_number_red = Math.floor(Math.random() * 255) + 1;
+        var random_number_green = Math.floor(Math.random() * 255) + 1;
+        var random_number_blue = Math.floor(Math.random() * 255) + 1; 
+
+        document.getElementById('result_sound').innerHTML = 'I can hear - ' + results[0].label;
+        document.getElementById('result_confidence').innerHTML = 'Accuracy - ' + (results[0].confidence * 100).toFixed(2) + ' % ';
+        document.getElementById('result_confidence').style.color = 'rgb (' + random_number_red + ', ' + random_number_green + ', ' + random_number_blue + ')';
+        document.getElementById('result_sound').style.color = 'rgb (' + random_number_red + ', ' + random_number_green + ', ' + random_number_blue + ')';
+
+        var img1 = document.getElementById('alien1');
+        var img2 = document.getElementById('alien2');
+        var img3 = document.getElementById('alien3');
+        var img4 = document.getElementById('alien4');
+
+        if(results[0].label = 'Clap') {
+            img1.src = 'aliens-01.gif';
+            img2.src = 'aliens-02.png';
+            img3.src = 'aliens-03.png';
+            img4.src = 'aliens-04.png';
+        }
+        else if (results[0].label = 'Shake') {
+            img1.src = 'aliens-01.png';
+            img2.src = 'aliens-02.gif';
+            img3.src = 'aliens-03.png';
+            img4.src = 'aliens-04.png';
+        }
+        else if (results[0].label = 'Snap') {
+            img1.src = 'aliens-01.png';
+            img2.src = 'aliens-02.png';
+            img3.src = 'aliens-03.gif';
+            img4.src = 'aliens-04.png';
+        }
+        else {
+            img1.src = 'aliens-01.png';
+            img2.src = 'aliens-02.png';
+            img3.src = 'aliens-03.png';
+            img4.src = 'aliens-04.gif';
+        }
+
+} 
+
+
+
 
 }
-
