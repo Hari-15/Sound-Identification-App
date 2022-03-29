@@ -1,0 +1,30 @@
+body {
+    background-color: skyblue;
+    color: black;
+    text-align: center;
+}
+
+.heading {
+    width: 80%;
+    font-size: 22px;
+}
+
+.name_of_objects {
+    color: red;
+}
+
+#camera {
+    border: 3px rebeccapurple ridge;
+    width: 350px;
+    height: 300px;
+    background-color: lightgray;
+}
+
+#result { 
+    width: 350px;
+    height: 300px;  
+}
+
+#result_object, #result_accuracy {
+    color: green;
+}
